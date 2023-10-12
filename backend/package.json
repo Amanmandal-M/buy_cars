@@ -5,20 +5,29 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "npm install --save && node server.js",
+    "server": "nodemon server.js",
+    "start-pm2": "pm2 start server.js",
+    "stop-pm2": "pm2 stop all",
+    "logs": "pm2 logs"
   },
   "keywords": [],
-  "author": "",
+  "author": "Aman Mandal",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.6.1",
     "nodemon": "^3.0.1",
     "path": "^0.12.7",
-    "pm2": "^5.3.0"
+    "pm2": "^5.3.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
   }
 }

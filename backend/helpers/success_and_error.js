@@ -1,16 +1,17 @@
 // Success and Error Format
 
-exports.errorResponse = (status, message) => {
+exports.errorResponse = (status_code, message, error) => {
   return {
-    status,
+    status_code,
     success: false,
     message,
+    error,
   };
 };
 
-exports.successResponse = (statusCode, message, data) => {
+exports.successResponse = (status_code, message, data) => {
   return {
-    statusCode,
+    status_code,
     success: true,
     message,
     data,

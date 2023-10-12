@@ -33,4 +33,4 @@ const marketplaceInventorySchema = new mongoose.Schema(
   }
 );
 
-module.exports.marketplaceInventoryModel = mongoose.model("Marketplace_Inventory", marketplaceInventorySchema);
+exports.marketplaceInventoryModel = mongoose.model("Marketplace_Inventory", marketplaceInventorySchema);

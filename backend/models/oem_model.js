@@ -51,4 +51,4 @@ const oemSpecsSchema = new mongoose.Schema(
   }
 );
 
-module.exports.oemSpecsModel = mongoose.model("OEM_Specs", oemSpecsSchema);
+exports.oemSpecsModel = mongoose.model("OEM_Specs", oemSpecsSchema);
