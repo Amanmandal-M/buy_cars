@@ -1,3 +1,54 @@
-node_modules
-package-lock.json
+# Ignore logs
+logs/
+*.log
+
+# Ignore testing and build directories
+__tests__/
+build/
+dist/
+
+# Ignore editor-specific files and directories
+.vscode/
+.idea/
+
+# Ignore operating system generated files
+.DS_Store
+Thumbs.db
+
+# Ignore environment-specific files
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignore compiled output for compiled languages
+*.class
+*.war
+*.jar
+*.ear
+
+# Ignore npm debug log
+npm-debug.log*
+
+# Ignore yarn error log
+yarn-error.log
+
+# Ignore production build outputs
+/build/
+
+# Ignore node-debug.log
+node_modules
+node-debug.log
+
+# Ignore .DS_Store files in folders
+**/.DS_Store
+
+# Ignore npm's cache directory
+.npm/
+
+# Ignore yarn's lock file
+yarn.lock
+
+# Ignore pacakage lock file
+package-lock.json

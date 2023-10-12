@@ -11,6 +11,10 @@ const oemSpecsSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    company_name: {
+      type: String,
+      required: true
+    },
     yearOfModel: {
       type: Number,
       required: true
