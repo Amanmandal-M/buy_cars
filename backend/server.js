@@ -14,7 +14,7 @@ const { connectToDatabase } = require("./configs/mongo_db_config");
 const { specs } = require("./configs/swagger_Config");
 
 // Routers Location
-// const userRouter = require("./routes/userRoute");
+const user_router = require("./routes/user_route");
 
 // Middleware Location
 
@@ -33,7 +33,7 @@ app.get("/", (req, res) => {
 });
 
 // Routes (API Endpoints)
-// app.use("/api/auth", userRouter);
+app.use("/api/auth", user_router);
 
 // Middleware for token authentication (applies to the routes below)
 
