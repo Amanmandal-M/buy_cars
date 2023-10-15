@@ -12,6 +12,12 @@ const {
   successResponse,
 } = require("../helpers/success_and_error");
 
+// OTP Location
+const { generateOTPforMail } = require("../helpers/mail_otp_helper");
+
+// Mail Location
+const { sendEmail } = require("../helpers/sending_emails");
+
 // Static Error Message
 const error_message = "Internal Server Error";
 
@@ -57,6 +63,12 @@ exports.createUserController = async (req, res) => {
 exports.loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    const ifExist = await userModel.findOne({email});
+
+    if (!ifExist) {
+      return res.status(409).send(errorResponse(409, "User not found"));
+    };    
   } catch (error) {
     console.log(
       colors.red({
