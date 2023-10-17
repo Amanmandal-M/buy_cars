@@ -14,15 +14,26 @@ const {
 
 // OTP Location
 const { generateOTPforMail } = require("../helpers/mail_otp_helper");
+const {
+  generateOTPforMailforForgotPassword,
+} = require("../helpers/mail_otp_helper_2");
 
 // Mail Location
 const { sendEmail } = require("../helpers/sending_emails");
 
 // Email Template Location
-const { registerMail, loginMail } = require("../layouts/email_template");
+const {
+  registerMail,
+  loginMail,
+  resendOTPMail,
+  resendOTPVerifiedMail,
+  sendOTPforChangePasswordMail,
+  passwordChangedMail,
+} = require("../layouts/email_template");
 
 // Static Error Message
 const error_message = "Internal Server Error";
+var verify_otp, verify_otp_for_password_change, current_user, existing_user;
 
 // Create User Controller
 exports.createUserController = async (req, res) => {
@@ -30,13 +41,13 @@ exports.createUserController = async (req, res) => {
     const { name, email, password, contactNumber, role } = req.body;
 
     if (!name || !email || !password || !role || !contactNumber) {
-      return res.status(400).send(errorResponse(400, "Enter all Fields First"));
+      return res.status(400).json(errorResponse(400, "Enter all Fields First"));
     }
 
     const ifExist = await userModel.findOne({ email });
 
     if (ifExist) {
-      return res.status(409).send(errorResponse(409, "User already exists"));
+      return res.status(409).json(errorResponse(409, "User already exists"));
     }
 
     const hashing_password = await bcrypt.hash(password, 10);
@@ -66,7 +77,7 @@ exports.createUserController = async (req, res) => {
         message: "Error creating user",
       })
     );
-    res.status(500).send(errorResponse(500, error.message, error.message));
+    res.status(500).json(errorResponse(500, error.message, error.message));
   }
 };
 
@@ -76,16 +87,17 @@ exports.loginController = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await userModel.findOne({ email });
+    current_user = user;
 
     if (!user) {
-      return res.status(409).send(errorResponse(409, "User not found"));
+      return res.status(409).json(errorResponse(409, "User not found"));
     }
 
     // Check if the provided password matches the stored password hash
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      return res.status(401).send(errorResponse(401, "Invalid credentials"));
+      return res.status(401).json(errorResponse(401, "Invalid credentials"));
     }
 
     // Generate a JWT token for authentication
@@ -111,10 +123,10 @@ exports.loginController = async (req, res) => {
     const otpMail = generateOTPforMail();
 
     // Send Email
-    sendEmail(loginMail(user, otpMail))
+    sendEmail(loginMail(user, otpMail));
 
     // Send success response with token
-    return res.status(200).send(successResponse(200, "Login successful", data));
+    return res.status(200).json(successResponse(200, "Login successful", data));
   } catch (error) {
     console.log(
       colors.red({
@@ -122,22 +134,28 @@ exports.loginController = async (req, res) => {
         message: "Error login user",
       })
     );
-    res.status(500).send(errorResponse(500, error_message, error.message));
+    res.status(500).json(errorResponse(500, error_message, error.message));
   }
 };
 
-// Forgot OTP Controller
-exports.forgotOtpController = async (req, res) => {
+// Resend OTP Controller
+exports.resendOtpController = async (req, res) => {
   try {
-    const {otp} = req.body;
-
     // OTP Generator
     const otpMail = generateOTPforMail();
+    verify_otp = otpMail;
 
-    if(otp == otpMail) {
-      return res.status(200).json(successResponse(200, "User Verified Successfully"));
-    }
-    
+    const data = {
+      resend_otp: otpMail,
+    };
+
+    // Send Email
+    sendEmail(resendOTPMail(current_user, otpMail));
+
+    // Send success response with token
+    return res
+      .status(200)
+      .json(successResponse(200, "OTP Resend Successfully", data));
   } catch (error) {
     console.log(
       colors.red({
@@ -145,13 +163,105 @@ exports.forgotOtpController = async (req, res) => {
         message: "Error Forgot OTP",
       })
     );
-    res.status(500).send(errorResponse(500, error_message, error.message));
+    res.status(500).json(errorResponse(500, error_message, error.message));
+  }
+};
+
+// Verify Resend OTP
+exports.resendOtpVerifyController = async (req, res) => {
+  try {
+    const { otp } = req.body;
+
+    if (otp !== verify_otp) {
+      return res.status(409).json(errorResponse(409, "Wrong OTP Entered"));
+    }
+
+    const data = {
+      resend_otp: otpMail,
+    };
+
+    // Send Email
+    sendEmail(resendOTPVerifiedMail(current_user));
+
+    // Send success response with token
+    return res
+      .status(200)
+      .json(successResponse(200, "OTP Resend Successfully", data));
+  } catch (error) {
+    console.log(
+      colors.red({
+        error_message: error.message,
+        message: "Error Forgot OTP",
+      })
+    );
+    res.status(500).json(errorResponse(500, error_message, error.message));
   }
 };
 
 // Forgot Password Controller
-exports.forgotPasswordController = async (req, res) => {
+exports.forgotPasswordSendOTPController = async (req, res) => {
   try {
+    const { email } = req.body;
+
+    // Check user
+    const user = await userModel.findOne({ email });
+    existing_user = user;
+
+    if (!user) {
+      return res.status(409).json(errorResponse(409, "User not found"));
+    }
+
+    // OTP Generator
+    const otpMail = generateOTPforMailforForgotPassword();
+    verify_otp_for_password_change = otpMail;
+
+    // Send Email
+    sendEmail(sendOTPforChangePasswordMail(user, otpMail));
+
+    // Send success response with token
+    return res
+      .status(200)
+      .json(
+        successResponse(200, "OTP Sent Successfully For Changing Password")
+      );
+  } catch (error) {
+    console.log(
+      colors.red({
+        error_message: error.message,
+        message: "Error Forgot Password",
+      })
+    );
+    res.status(500).send(errorResponse(500, error_message, error.message));
+  }
+};
+
+// Forgot Password and Verify OTP Controller
+exports.forgotPasswordVerifyOTPController = async (req, res) => {
+  try {
+    const { otp, new_password } = req.body;
+
+    if (otp !== verify_otp_for_password_change) {
+      return res.status(409).json(errorResponse(409, "Wrong OTP Entered"));
+    }
+
+    if (!existing_user) {
+      return res.status(409).json(errorResponse(409, "User not found"));
+    }
+
+    // Change Password
+    const newHashedPassword = await bcrypt.hash(new_password, 10);
+    existing_user.password = newHashedPassword;
+    await existing_user.save();
+
+    // Send Email
+    sendEmail(passwordChangedMail(existing_user));
+
+    // Send success response with token
+    return res
+      .status(200)
+      .json(
+        successResponse(200, "Password Changed Successfully")
+      );
   } catch (error) {
     console.log(
       colors.red({
