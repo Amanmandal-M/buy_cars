@@ -6,6 +6,9 @@ const user_controller = require('../controllers/user_controller');
 // Route for user registration
 user_router.post('/register', user_controller.createUserController); 
 
+// Route for Get all user with the help of access key
+user_router.get('/:accesskey', user_controller.getAllUserController); 
+
 // Route for user login
 user_router.post('/login', user_controller.loginController);
 

@@ -35,6 +35,7 @@ const {
 const error_message = "Internal Server Error";
 var verify_otp, verify_otp_for_password_change, current_user, existing_user;
 
+
 // Create User Controller
 exports.createUserController = async (req, res) => {
   try {
@@ -259,14 +260,38 @@ exports.forgotPasswordVerifyOTPController = async (req, res) => {
     // Send success response with token
     return res
       .status(200)
-      .json(
-        successResponse(200, "Password Changed Successfully")
-      );
+      .json(successResponse(200, "Password Changed Successfully"));
   } catch (error) {
     console.log(
       colors.red({
         error_message: error.message,
         message: "Error Forgot Password",
+      })
+    );
+    res.status(500).send(errorResponse(500, error_message, error.message));
+  }
+};
+
+
+// Restricted Routes With access key
+exports.getAllUserController = async (req, res) => {
+  const { accesskey } = req.params;
+  const ACCESS_KEY = process.env.ACCESS_KEY;
+  try {
+    if (accesskey !== ACCESS_KEY) {
+      return res
+        .status(409)
+        .json(errorResponse(409, "Access Key Validation Failed"));
+    }
+    const allUserData = await userModel.findAll();
+    return res
+      .status(200)
+      .json(successResponse(200, "Retrieved Successfully", allUserData));
+  } catch (error) {
+    console.log(
+      colors.red({
+        error_message: error.message,
+        message: "Error Get All User",
       })
     );
     res.status(500).send(errorResponse(500, error_message, error.message));
