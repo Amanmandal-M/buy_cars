@@ -1,7 +1,7 @@
 exports.registerMail = (user) => {
   const registerMailHandler = {
     email: user.email,
-    subject: "Welcome to BuyCars ${user.name} !",
+    subject: `Welcome to BuyCars ${user.name} !`,
     body: `
           <html>
               <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
