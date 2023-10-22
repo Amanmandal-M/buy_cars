@@ -35,7 +35,6 @@ const {
 const error_message = "Internal Server Error";
 var verify_otp, verify_otp_for_password_change, current_user, existing_user;
 
-
 // Create User Controller
 exports.createUserController = async (req, res) => {
   try {
@@ -273,7 +272,7 @@ exports.forgotPasswordVerifyOTPController = async (req, res) => {
 };
 
 
-// Restricted Routes With access key
+// Restricted Routes With access key for getting all datas of user
 exports.getAllUserController = async (req, res) => {
   const { accesskey } = req.params;
   const ACCESS_KEY = process.env.ACCESS_KEY;
