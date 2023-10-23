@@ -1,0 +1,11 @@
+<!----------------------------------- Users API ----------------------------------->
+
+/api/auth/register                       : Route for user registration. 
+/api/auth/login                          : Route for user login.   
+/api/auth/:accesskey                     : Route for Get all user with the help of access key. 
+/api/auth/resend-otp                     : Route for Resend OTP.         
+/api/auth/verify-otp                     : Route for Verify Resent OTP.   
+/api/auth/forgot-password/send-otp       : Route for forgot password send otp.    
+/api/auth/forgot-password/verify-otp     : Route for forgot password and verify otp.  
+
+<!-----------------------------------  API ----------------------------------->
