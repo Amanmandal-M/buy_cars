@@ -24,5 +24,4 @@ user_router.post('/forgot-password/send-otp', user_controller.forgotPasswordSend
 // Route for forgot password and verify otp
 user_router.patch('/forgot-password/verify-otp', user_controller.forgotPasswordVerifyOTPController);  
 
-
 module.exports = user_router;

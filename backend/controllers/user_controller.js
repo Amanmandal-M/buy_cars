@@ -33,6 +33,8 @@ const {
 
 // Static Error Message
 const error_message = "Internal Server Error";
+
+// Variables for OTP and for checking purposes 
 var verify_otp, verify_otp_for_password_change, current_user, existing_user;
 
 // Create User Controller
@@ -77,7 +79,7 @@ exports.createUserController = async (req, res) => {
         message: "Error creating user",
       })
     );
-    res.status(500).json(errorResponse(500, error.message, error.message));
+    res.status(500).json(errorResponse(500, error_message, error.message));
   }
 };
 

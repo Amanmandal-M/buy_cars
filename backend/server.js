@@ -15,6 +15,7 @@ const { specs } = require("./configs/swagger_Config");
 
 // Routers Location
 const user_router = require("./routes/user_route");
+const company_router = require("./routes/company_route");
 
 // Middleware Location
 
@@ -34,6 +35,8 @@ app.get("/", (req, res) => {
 
 // Routes (API Endpoints)
 app.use("/api/auth", user_router);
+app.use("/api/company", company_router);
+
 
 // Middleware for token authentication (applies to the routes below)
 
