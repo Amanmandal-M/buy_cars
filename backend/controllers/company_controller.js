@@ -9,6 +9,9 @@ const {
     successResponse,
   } = require("../helpers/success_and_error");
 
+//  Company Model Location 
+const { companyModel } = require('../models/company_model');
+
 
 exports.getCompaniesController = async (req,res) => {
     try {
@@ -38,7 +41,30 @@ exports.getCompanyByIdController = async (req,res) => {
     }
 };
 
-exports.createcompany_controller = async (req,res) => {
+exports.getCompanyByCompanyNameController = async (req,res) => {
+    try {
+        const { search } = req.query;
+
+        const data = await companyModel.find({company_name:search});
+
+        if(data.length <= 0) {
+            return res.status(409).json(errorResponse(409, "Company not found"));
+        }
+
+    // Send success response with token
+    return res.status(200).json(successResponse(200, "Companuy Data", data));        
+    } catch (error) {
+        console.log(
+            colors.red({
+                error_message: error.message,
+                message: "Error in get company by company name controller",
+            })
+        );
+        res.status(500).json(errorResponse(500, error_message, error.message));
+    }
+};
+
+exports.createCompanyController = async (req,res) => {
     try {
         
     } catch (error) {
@@ -52,7 +78,7 @@ exports.createcompany_controller = async (req,res) => {
     }
 };
 
-exports.updatecompany_controller = async (req,res) => {
+exports.updateCompanyController = async (req,res) => {
     try {
         
     } catch (error) {
@@ -66,7 +92,7 @@ exports.updatecompany_controller = async (req,res) => {
     }
 };
 
-exports.deletecompany_controller = async (req,res) => {
+exports.deleteCompanyController = async (req,res) => {
     try {
         
     } catch (error) {
@@ -79,3 +105,9 @@ exports.deletecompany_controller = async (req,res) => {
         res.status(500).json(errorResponse(500, error_message, error.message));
     }
 };
+
+
+
+
+
+
