@@ -12,6 +12,9 @@ user_router.post('/register', user_controller.createUserController);
 // Route for user login
 user_router.post('/login', user_controller.loginController);
 
+// Route for Verify Main (First) Otp
+user_router.post('/verify-main-otp', user_controller.verifyMainOtpController);  
+
 // Route for Resend OTP
 user_router.get('/resend-otp', user_controller.resendOtpController);
 
