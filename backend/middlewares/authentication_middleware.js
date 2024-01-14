@@ -15,17 +15,29 @@ exports.auth_middleware = async (req, res, next) => {
     const bearerToken = req.header("authorization");
 
     if (!bearerToken || !bearerToken.startsWith("Bearer ")) {
-      return res.status(401).json(errorResponse(401, "Unauthorized", "Bearer of the token is not defined"));
+      return res
+        .status(401)
+        .json(
+          errorResponse(
+            401,
+            "Unauthorized",
+            "Bearer of the token is not defined"
+          )
+        );
     }
 
     const token = bearerToken.split(" ")[1];
 
     jwt.verify(token, token_key, (err, decoded) => {
       if (err) {
-        return res.status(401).json(errorResponse(401, "Invalid Token", err.message));
+        return res
+          .status(401)
+          .json(errorResponse(401, "Invalid Token", err.message));
       }
 
       req.user = decoded;
+      req.userId = decoded.userId;
+      req.role = decoded.role;
       next();
     });
   } catch (error) {
@@ -35,6 +47,8 @@ exports.auth_middleware = async (req, res, next) => {
         message: "Error in authentication middleware",
       })
     );
-    return res.status(500).json(errorResponse(500, error_message, error.message));
+    return res
+      .status(500)
+      .json(errorResponse(500, error_message, error.message));
   }
 };

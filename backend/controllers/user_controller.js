@@ -35,7 +35,7 @@ const {
 const error_message = "Internal Server Error";
 
 // Variables for OTP and for checking purposes 
-var verify_otp, verify_otp_for_password_change, current_user, existing_user;
+var verifyMainOtp, mainDataOfUser, verify_otp, verify_otp_for_password_change, current_user, existing_user;
 
 // Create User Controller
 exports.createUserController = async (req, res) => {
@@ -123,12 +123,14 @@ exports.loginController = async (req, res) => {
 
     // OTP Generator
     const otpMail = generateOTPforMail();
+    verifyMainOtp = otpMail;
+    mainDataOfUser = data;
 
     // Send Email
     sendEmail(loginMail(user, otpMail));
 
     // Send success response with token
-    return res.status(200).json(successResponse(200, "Login successful", data));
+    return res.status(200).json(successResponse(200, "Login successful", 'Now Please Verify OTP.'));
   } catch (error) {
     console.log(
       colors.red({
@@ -139,6 +141,34 @@ exports.loginController = async (req, res) => {
     res.status(500).json(errorResponse(500, error_message, error.message));
   }
 };
+
+// Verify OTP When User Login
+exports.verifyMainOtpController = async (req,res) => {
+  try {
+    // OTP Verification Main
+    const { otp } = req.body;
+  
+    if (otp != verifyMainOtp) {
+      return res.status(409).json(errorResponse(409, "Wrong OTP Entered"));
+    }
+
+    // Send Email
+    sendEmail(resendOTPVerifiedMail(current_user));
+
+    // Send success response with token
+    return res
+      .status(200)
+      .json(successResponse(200, "OTP Verified Successfully", mainDataOfUser));
+  } catch (error) {
+    console.log(
+      colors.red({
+        error_message: error.message,
+        message: "Error in verifyMainOtpController",
+      })
+    );
+    res.status(500).json(errorResponse(500, error_message, error.message));
+  }  
+}
 
 // Resend OTP Controller
 exports.resendOtpController = async (req, res) => {
@@ -284,7 +314,7 @@ exports.getAllUserController = async (req, res) => {
         .status(409)
         .json(errorResponse(409, "Access Key Validation Failed"));
     }
-    const allUserData = await userModel.findAll();
+    const allUserData = await userModel.find();
     return res
       .status(200)
       .json(successResponse(200, "Retrieved Successfully", allUserData));

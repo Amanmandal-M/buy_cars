@@ -73,11 +73,30 @@ exports.getCompanyByCompanyNameController = async (req, res) => {
 
 exports.createCompanyController = async (req, res) => {
   try {
+    const userId = req.userId;
+    const { company_name, carList } = req.body;
+
+    // Assuming that carList is an array of car IDs
+    const carListExists = await companyModel.find({ carList: { $in: carList } });
+
+    if (carListExists.length > 0) {
+      return res.status(409).json(errorResponse(409, 'One or more cars in the list already associated with a company'));
+    }
+
+    const new_company = new companyModel({
+      userId: userId,
+      company_name,
+      carList,
+    });
+
+    await new_company.save();
+
+    return res.status(200).json(successResponse(200, 'Company created successfully', new_company));
   } catch (error) {
     console.log(
       colors.red({
         error_message: error.message,
-        message: "Error in create company controller",
+        message: 'Error in create company controller',
       })
     );
     res.status(500).json(errorResponse(500, error_message, error.message));
