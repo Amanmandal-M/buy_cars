@@ -1,4 +1,4 @@
-<!----------------------------------- Users API ----------------------------------->
+<!----------------------------------- Users API (Protected + Unprotected Routes) ----------------------------------->
 
 /api/auth/register                       : Route for user registration. 
 /api/auth/login                          : Route for user login.   
@@ -8,4 +8,11 @@
 /api/auth/forgot-password/send-otp       : Route for forgot password send otp.    
 /api/auth/forgot-password/verify-otp     : Route for forgot password and verify otp.  
 
-<!-----------------------------------  API ----------------------------------->
+<!-----------------------------------  Companies API (Protected Routes) ----------------------------------->
+
+/api/company/                            : Route for Get all companies data.
+/api/company/single_company/:id          : Route for Get Single Company By their Id.
+/api/company/company_name                : Route for Get Companies by Company Name.
+/api/company//create_company             : Route for Create a new company.   
+/api/company/update_company/:id          : Route for Update Company By Company Id.
+/api/company/delete_company/:id          : Route for Delete Company By Company Id.
