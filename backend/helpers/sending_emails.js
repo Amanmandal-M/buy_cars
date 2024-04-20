@@ -14,10 +14,11 @@ exports.sendEmail = async (data) => {
 
   transporter.sendMail({
     to: `${data.email}`,
-    from: process.env.EMAIL_ID,
+    from: `"Buy Cars" <${process.env.EMAIL_ID}>`,
     subject: `${data.subject}`,
     html: `${data.body}`,
   })
+  
   .then(()=>console.log('Mail sent successfully'))
   .catch((err)=>console.log("err",err))
 
