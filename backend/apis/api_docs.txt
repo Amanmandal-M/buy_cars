@@ -1,12 +1,13 @@
-<!----------------------------------- Users API (Protected + Unprotected Routes) ----------------------------------->
+<!------------------------------ Users API (Protected + Unprotected Routes) ------------------------------>
 
 /api/auth/register                       : Route for user registration. 
-/api/auth/login                          : Route for user login.   
-/api/auth/:accesskey                     : Route for Get all user with the help of access key. 
+/api/auth/login                          : Route for user login. 
+/api/auth/verify-main-otp                : Route for Verify Main (First) Otp.  
 /api/auth/resend-otp                     : Route for Resend OTP.         
 /api/auth/verify-otp                     : Route for Verify Resent OTP.   
 /api/auth/forgot-password/send-otp       : Route for forgot password send otp.    
-/api/auth/forgot-password/verify-otp     : Route for forgot password and verify otp.  
+/api/auth/forgot-password/verify-otp     : Route for forgot password and verify otp.
+/api/auth/:accesskey                     : Route for Get all user with the help of access key.
 
 <!-----------------------------------  Companies API (Protected Routes) ----------------------------------->
 
@@ -16,3 +17,82 @@
 /api/company//create_company             : Route for Create a new company.   
 /api/company/update_company/:id          : Route for Update Company By Company Id.
 /api/company/delete_company/:id          : Route for Delete Company By Company Id.
+
+
+
+<!----------------------------------- Sample Requests or Responses for (Users API) ----------------------------------->
+
+****** Endpoint: /api/auth/register
+Request: 
+{
+    "name": "Sample Test",
+    "email": "sample@gmail.com",
+    "password": "samplepassword",
+    "contactNumber": 1234567890,
+    "role": "customer / dealer / admin / '' "
+}
+
+Response: Status: 200 OK
+{
+  "status_code": 200,
+  "success": true,
+  "message": "User Registered Successfully",
+  "data": {
+    "name": "Sample Test",
+    "email": "sample@gmail.com",
+    "password": "$2b$10$pnaWz1MROL9Gh6Gnt4FEtE2i9WIiZPWLG3/3oqdW",
+    "contactNumber": 1234567890,
+    "role": "dealer",
+    "_id": "6623efe0c0a6bc9216d0",
+    "createdAt": "2024-04-20T16:40:00.068Z",
+    "updatedAt": "2024-04-20T16:40:00.068Z",
+    "__v": 0
+  }
+}
+
+
+****** Endpoint: /api/auth/login
+Request: 
+{
+    "email": "sample@gmail.com",
+    "password": "samplepassword"
+}
+
+Response: Status: 200 OK
+{
+  "status_code": 200,
+  "success": true,
+  "message": "Login successful",
+  "data": "Now Please Verify OTP."
+}
+
+
+****** Endpoint: /api/auth/verify-main-otp
+Request: 
+{
+    "otp": "123456" 
+}
+
+Response: Status: 200 OK
+{
+  "status_code": 200,
+  "success": true,
+  "message": "OTP Verified Successfully",
+  "data": {
+    "user": {
+      "_id": "6623efe0c0a6bc9216d0",
+      "name": "Sample Test",
+      "email": "sample@gmail.com",
+      "password": "$2b$10$pnaWz1MROL9Gh6Gnt4FEtE2i9WIiZPWLG3/3oqdW",
+      "contactNumber": 1234567890,
+      "role": "dealer",
+      "createdAt": "2024-04-20T16:40:00.068Z",
+      "updatedAt": "2024-04-20T16:40:00.068Z",
+      "__v": 0
+    },
+    "normal_token": "eyJhbGciOiJIUzI1NiIsIkpXVCJ9.eyJ1c2VySWQiOiI2NjIzZWZlMGMwYWFhYTZiYzk2MjE2ZDAiLCJyb2xlIjoiZGVhbGVyIiwiaWF0IjoxNzEzNjMxNTMzLCJleHAiOjE3MTQyMzYzMzN9.5bJOYRi7m9sQKo3otuvsVCNfS0jMGk0",
+    "refresh_Token": "eyJhbI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjIzZWZlMGMwYWFhYTZiYzk2MjE2ZDAiLCJyb2xlIjoiZGVhbGVyIiwiaWF0IjoxNzEzNjMxNTMzLCJleHAiOjE3MTYwNTA3MzN9.k-c6pve4rZMOzo1uStFoOQs6rizBuRI"
+  }
+}
+
+
