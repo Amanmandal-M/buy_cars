@@ -208,17 +208,13 @@ exports.resendOtpVerifyController = async (req, res) => {
       return res.status(409).json(errorResponse(409, "Wrong OTP Entered"));
     }
 
-    const data = {
-      resend_otp: otpMail,
-    };
-
     // Send Email
     sendEmail(resendOTPVerifiedMail(current_user));
 
     // Send success response with token
     return res
       .status(200)
-      .json(successResponse(200, "OTP Resend Successfully", data));
+      .json(successResponse(200, "OTP Verified Successfully", current_user));
   } catch (error) {
     console.log(
       colors.red({
@@ -303,10 +299,9 @@ exports.forgotPasswordVerifyOTPController = async (req, res) => {
   }
 };
 
-
 // Restricted Routes With access key for getting all datas of user
 exports.getAllUserController = async (req, res) => {
-  const { accesskey } = req.params;
+  const  accesskey = req.header('ACCESS-KEY');
   const ACCESS_KEY = process.env.ACCESS_KEY;
   try {
     if (accesskey !== ACCESS_KEY) {
