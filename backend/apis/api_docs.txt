@@ -22,8 +22,8 @@
 
 <!----------------------------------- Sample Requests or Responses for (Users API) ----------------------------------->
 
-****** Endpoint: /api/auth/register
-Request: 
+****** Endpoint: POST /api/auth/register
+Request Body: 
 {
     "name": "Sample Test",
     "email": "sample@gmail.com",
@@ -51,8 +51,8 @@ Response: Status: 200 OK
 }
 
 
-****** Endpoint: /api/auth/login
-Request: 
+****** Endpoint: POST /api/auth/login
+Request Body: 
 {
     "email": "sample@gmail.com",
     "password": "samplepassword"
@@ -67,8 +67,8 @@ Response: Status: 200 OK
 }
 
 
-****** Endpoint: /api/auth/verify-main-otp
-Request: 
+****** Endpoint: POST /api/auth/verify-main-otp
+Request Body: 
 {
     "otp": "123456" 
 }
@@ -95,4 +95,77 @@ Response: Status: 200 OK
   }
 }
 
+****** Endpoint: GET /api/auth/resend-otp
+Response: Status: 200 OK
+{
+  "status_code": 200,
+  "success": true,
+  "message": "OTP Resend Successfully",
+  "data": {
+    "resend_otp": "123456"
+  }
+}
 
+****** Endpoint: GET /api/auth/verify-otp
+Request Body: 
+{
+    "otp": "123456" 
+}
+
+Response: Status: 200 OK
+{
+  "status_code": 200,
+  "success": true,
+  "message": "OTP Verified Successfully",
+  "data": {
+      "_id": "6623efe0c0a6bc9216d0",
+      "name": "Sample Test",
+      "email": "sample@gmail.com",
+      "password": "$2b$10$pnaWz1MROL9Gh6Gnt4FEtE2i9WIiZPWLG3/3oqdW",
+      "contactNumber": 1234567890,
+      "role": "dealer",
+      "createdAt": "2024-04-20T16:40:00.068Z",
+      "updatedAt": "2024-04-20T16:40:00.068Z",
+      "__v": 0
+    }
+}
+
+****** Endpoint: PATCH /api/auth/forgot-password/send-otp
+Request Body: 
+{
+    "new_password": "sample789",
+    "otp" : "987654"
+}
+
+Response: Status: 200 OK
+{
+  "status_code": 200,
+  "success": true,
+  "message": "Password Changed Successfully"
+}
+
+****** Endpoint: GET /api/auth/userLists
+Request headers: 
+{
+    "ACCESS-KEY": "pass access key here",
+}
+
+Response: Status: 200 OK
+{
+  "status_code": 200,
+  "success": true,
+  "message": "Retrieved Successfully",
+  "data": [
+    {
+      "_id": "6623efe0c0a6bc9216d0",
+      "name": "Sample Test",
+      "email": "sample@gmail.com",
+      "password": "$2b$10$pnaWz1MROL9Gh6Gnt4FEtE2i9WIiZPWLG3/3oqdW",
+      "contactNumber": 1234567890,
+      "role": "dealer",
+      "createdAt": "2024-04-20T16:40:00.068Z",
+      "updatedAt": "2024-04-20T16:40:00.068Z",
+      "__v": 0
+    }
+  ]
+}
