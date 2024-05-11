@@ -133,8 +133,21 @@ Response: Status: 200 OK
 ****** Endpoint: PATCH /api/auth/forgot-password/send-otp
 Request Body: 
 {
-    "new_password": "sample789",
-    "otp" : "987654"
+    "email": "sample@gmail.com"
+}
+
+Response: Status: 200 OK
+{
+  "status_code": 200,
+  "success": true,
+  "message": "OTP Sent Successfully For Changing Password"
+}
+
+****** Endpoint: GET /api/auth/forgot-password/verify-otp
+Request headers: 
+{
+    "otp":123456, 
+    "new_password": "sample123@"
 }
 
 Response: Status: 200 OK
@@ -169,5 +182,3 @@ Response: Status: 200 OK
     }
   ]
 }
-
-****** Endpoint: GET /api/auth/userLists
