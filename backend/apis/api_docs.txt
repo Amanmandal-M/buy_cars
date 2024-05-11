@@ -20,7 +20,7 @@
 
 
 
-<!----------------------------------- Sample Requests or Responses for (Users API) ----------------------------------->
+<!------------------------------ Sample Requests or Responses for (Users API) ------------------------------->
 
 ****** Endpoint: POST /api/auth/register
 Request Body: 
@@ -169,3 +169,5 @@ Response: Status: 200 OK
     }
   ]
 }
+
+****** Endpoint: GET /api/auth/userLists

@@ -4,7 +4,7 @@ const user_router = require('express').Router();
 const user_controller = require('../controllers/user_controller');
 
 // Route for Get all user with the help of access key
-user_router.get('/:accesskey', user_controller.getAllUserController); 
+user_router.get('/userLists', user_controller.getAllUserController); 
 
 // Route for user registration
 user_router.post('/register', user_controller.createUserController); 
@@ -13,7 +13,7 @@ user_router.post('/register', user_controller.createUserController);
 user_router.post('/login', user_controller.loginController);
 
 // Route for Verify Main (First) Otp
-user_router.post('/verify-main-otp', user_controller.verifyMainOtpController);  
+user_router.get('/verify-main-otp', user_controller.verifyMainOtpController);  
 
 // Route for Resend OTP
 user_router.get('/resend-otp', user_controller.resendOtpController);
